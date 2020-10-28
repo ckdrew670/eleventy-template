@@ -1,0 +1,29 @@
+{% extends "_layouts/simple.njk" %}
+
+{% block content %}{% endblock content %}
+{% block testimonials %}
+    <div class="testimonial-area sp bg1">
+        <div class="container">
+            <div class="testimonial-slider">
+
+                {% for testimonial in collections.testimonials %}
+                    <div class="single-slide">
+                        <div class="inner">
+                            <p>{{ testimonial.data.description }}</p>
+                            <div class="client-info">
+                                <div class="client-img">
+                                    <img src="{{ testimonial.data.imageUrl }}" alt="client">
+                                </div>
+                                <div class="client-data">
+                                    <h4>{{ testimonial.data.name }}</h4>
+                                    <span>{{ testimonial.data.role }}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+                    
+            </div>
+        </div>
+    </div>
+{% endblock testimonials %}

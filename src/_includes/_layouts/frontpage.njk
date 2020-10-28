@@ -1,0 +1,58 @@
+{% extends "base.njk" %}
+
+{% block pageHeader %}{% endblock pageHeader %}
+
+{% block content %}
+    <div class="hero-slider">
+
+        {% for banner in banners %}
+            <div class="single-slide" style="background-image: url({{ banner.backgroundImage }})">
+                <div class="inner">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <div class="slide-content">
+                                    <h2>{{ banner.headline }}</h2>
+                                    <p>{{ banner.blurb }}</p>
+                                    <div class="slide-btn">
+                                        <a href="{{ banner.link.url }}" class="button">{{ banner.link.text }}</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div> 
+
+    <div class="service-area spt">
+        <div class="container">
+            <div class="section-title" data-margin="0 0 40px">
+                <h2>{{ services.title }}</h2>
+                <p>{{ services.description }}</p>
+            </div>
+        <div class="row">
+            {% for service in collections.services %}
+                <div class="col-md-4 single-service-2">
+                    <div class="inner">
+                        <div class="title">
+                            <div class="icon">
+                                <i class="fa fa-{{ service.data.faIcon }}"></i>
+                            </div>
+                            <h4>{{ service.data.title }}</h4>
+                        </div>
+                        <div class="content">
+                            <p>{{ service.data.description }}</p>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+            
+            <div class="col-12 row justify-content-md-center p-4">
+                <a href="{{ services.link.url }}" class="button">{{ services.link.text }}</a>
+            </div>
+        </div>
+    </div>       
+</div>
+{% endblock content %}

@@ -1,0 +1,14 @@
+{# first you need to extend the base file #}
+
+{% extends "base.njk" %}
+
+{# we want the content in the base.njk file to be overridden by the html in this file. So to do that we redeclare the content block and add some content inside it (see base.njk file line 65) #}
+{% block content %}
+<div class="container sp">
+    <div class="row justify-content-md-center">
+        <div class="col-10">
+            {{ content | safe }}
+        </div>
+    </div>
+</div>
+{% endblock content %}
