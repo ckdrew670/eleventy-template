@@ -1,0 +1,16 @@
+{
+    "siteName": "Lunar",
+    "email": "info@lunar.build",
+    "phone": "07768574657",
+    "address": "Unit 8, Paintworks, Bristol, BS43 3RN",
+    "socials": [
+        {
+            "socialName": "facebook",
+            "socialUrl": "#"
+        },
+        {
+            "socialName": "twitter",
+            "socialUrl": "#"
+        }
+    ]
+}

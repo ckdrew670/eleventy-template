@@ -1,0 +1,4 @@
+
+    {% for social in settings.socials %}
+        <a href="{{ social.socialUrl }}" class="fa fa-{{ social.socialName }}"></a>
+    {% endfor %}
