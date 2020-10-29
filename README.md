@@ -271,9 +271,11 @@ eleventyExcludeFromCollections: true
 
 ## Handling Data
 
+In Eleventy, data is merged from multiple different sources before the template is rendered. The data is merged in what Eleventy calls the Data Cascade. There is a hierarchy to this. Data redeclared closer to the content (eg. in the front matter) will override data from other sources. 
+
 ### Front matter
 
-Data can be stored in a number of different ways. 
+Data can be stored in a number of different ways. Eleventy uses the 
 
 The simplest is in the front matter of each individual template (as below). This data can be written as `yaml`, `json` or `js`.
 
@@ -288,7 +290,7 @@ bannerBackgroundImage: "/assets/img/jelly.jpg"
 ---
 ```
 
-### Directory leve data files
+### Directory level data files
 
 You can also store data inside certain directories. Let's say you have a folder that contains testimonials. Each testimonial shares certain data (as well as having it's own specific data). 
 
@@ -335,8 +337,9 @@ You can access this data from any template using the following syntax:
 {% endfor %}
 ```
 
-For more on this see the [docs](https://www.11ty.dev/docs/data/).
+TBC
 
+For more on this see the [docs](https://www.11ty.dev/docs/data/).
 
 ## API Requests
 
