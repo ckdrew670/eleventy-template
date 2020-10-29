@@ -159,3 +159,30 @@ description: "This is a page."
 ---
 ```
 
+You can remove unwanted blocks from a child template using the same logic: if there is content in the parent that you don't want in a specific child page, redeclare an empty block in the child template to override it.
+
+### Including partials
+
+You can use the Nunjucks `include` directive to include reusable partials in other Nunjucks files.
+
+Let's say you want to create a reusable socials bar.
+
+Create a partial in eg. `/_includes/_partials/socials.njk`:
+
+```js
+{% for social in settings.socials %}
+    <a href="{{ social.socialUrl }}" class="fa fa-{{ social.socialName }}"></a>
+{% endfor %}
+```
+
+Include the partial with the following syntax wherever you want to inject it:
+
+```js
+<div class="header-social">
+       {% include "socials.njk" %}
+</div>
+```
+
+**Important note:** you can only use `include` inside `.njk` files.<br>
+**Another important note:** any front matter in the included file will not be included using this approach, so you want your partials to use global (or directory level?) data files.
+
