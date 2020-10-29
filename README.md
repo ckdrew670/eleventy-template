@@ -45,6 +45,7 @@ module.exports = (config) => {
 }
 
 ```
+
 The defaults for the directory structure are:
 
 output: `_site` <br>
@@ -59,7 +60,7 @@ Your content can be separated from these templates using either regular `.html` 
 
 These content files can hold specific data as front matter, or be passed data from a `json` or `js` file in the immediate directory or globally. More on that [here](#handling-data).
 
-### Creating and extending templates
+### Creating and using templates
 
 Let's say you want to create a global template to be used on all pages. We'll call it `base.njk` and it contains our `<head>` tag as well as headers and footers etc ...
 
@@ -79,19 +80,35 @@ Let's say you want to create a global template to be used on all pages. We'll ca
 
 ```
 
-Just like with Blade, this then needs to be extended in your child template files using the following syntax at the top of the file:
-
-```js
-{% extends "base.njk" %}
-```
-
-In your `base.njk` file you'll have to create a space to yield any content from the child templates. To do this simply, the `base.njk` file should contain the following:
+In your `base.njk` file you'll also have to create a space to yield content. To do this simply, the `base.njk` file should contain the following:
 
 ```js
 {{ content | safe }}
 ```
 
-The `safe` filter escapes HTML. Any content in your child template will then be injected into `base.njk` here.
+The `safe` filter escapes HTML. Any content coming through will then be injected into `base.njk` at this point.
+
+To link your content files to your `base.njk` template, you need to declare it in the front matter of your content file like so:
+
+```md
+---
+layout: "_layouts/base.njk"
+title: "About Us"
+description: "This is our about page."
+bannerBackgroundImage: "/assets/img/page-title.jpg"
+---
+
+-content goes here-
+
+```
+
+### Extending templates
+
+You can extend parent templates in child template files using the following syntax at the top of the file:
+
+```js
+{% extends "base.njk" %}
+```
 
 Alternatively you can declare a **named block** in your `base.njk` file, give it some default content and have the ability to override that content in your individual child templates:
 
