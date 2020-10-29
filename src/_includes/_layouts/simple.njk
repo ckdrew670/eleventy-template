@@ -9,6 +9,14 @@
         <div class="col-10">
             {{ content | safe }}
         </div>
+
+        {% if dogImage %}
+        <div class="col-10">
+            <h3>Look at this good boi</h3>
+            <img src="{{ dogImage }}" alt="What a good boy"/>
+        </div>
+    {% endif %}
     </div>
 </div>
+
 {% endblock content %}
