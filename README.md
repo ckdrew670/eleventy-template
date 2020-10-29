@@ -47,8 +47,8 @@ module.exports = (config) => {
 ```
 The defaults for the directory structure are:
 
-output: `_site`
-data: `_data`
+output: `_site` /n
+data: `_data` /n
 include: `_includes`
 
 ## Templating
