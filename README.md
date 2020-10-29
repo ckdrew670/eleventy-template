@@ -392,5 +392,5 @@ It only fetches the API data at build time. Putting the above API request in a g
 
 For more info see these excellent tutorials to which much of this README is indebted:<br>
 [Youtube tutorial by Bryan Robinson](https://www.youtube.com/watch?v=z-o1W9ijUhI&list=PLOSLUtJ_J3rrJ1R1qEf8CCEpV3GgbJGNr)<br>
-[Introduction to 11ty](https://www.learnwithjason.dev/let-s-learn-eleventy)<br>
+[Introduction to 11ty - Learn with Jason](https://www.learnwithjason.dev/let-s-learn-eleventy)<br>
 [Eleventy Walkthrough](https://rphunt.github.io/eleventy-walkthrough/intro.html)
