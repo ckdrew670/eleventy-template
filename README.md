@@ -388,3 +388,9 @@ Any markdown file within this directory that extends `simple.njk` will output th
 If I didn't want the dog image to appear with the content in a specific `.md` file then just override the `dogImage` variable in the front matter for that file: `dogImage: false`.
 
 It only fetches the API data at build time. Putting the above API request in a global data file would mean that you only get ONE random image back (rather than one per page) because you only make one API request. At directory level, you make one request per page in that directory.
+
+
+For more info see these excellent tutorials to which much of this README is indebted:<br>
+[Youtube tutorial by Bryan Robinson](https://www.youtube.com/watch?v=z-o1W9ijUhI&list=PLOSLUtJ_J3rrJ1R1qEf8CCEpV3GgbJGNr)<br>
+[Introduction to 11ty](https://www.learnwithjason.dev/let-s-learn-eleventy)<br>
+[Eleventy Walkthrough](https://rphunt.github.io/eleventy-walkthrough/intro.html)
