@@ -60,7 +60,7 @@ Your content can be separated from these templates using either regular `.html` 
 
 These content files can hold specific data as front matter, or be passed data from a `json` or `js` file in the immediate directory or globally. More on that [here](#handling-data).
 
-### Creating and using templates
+### Creating templates and linking to content
 
 Let's say you want to create a global template to be used on all pages. We'll call it `base.njk` and it contains our `<head>` tag as well as headers and footers etc ...
 
@@ -88,7 +88,7 @@ In your `base.njk` file you'll also have to create a space to yield content. To 
 
 The `safe` filter escapes HTML. Any content coming through will then be injected into `base.njk` at this point.
 
-To link your content files to your `base.njk` template, you need to declare it in the front matter of your content file like so:
+To link your content files to your `base.njk` template, you need to declare it as a `layout` in the front matter of your content file (eg. `about.md`) like so:
 
 ```md
 ---
@@ -102,6 +102,8 @@ bannerBackgroundImage: "/assets/img/page-title.jpg"
 
 ```
 
+Note that the `title` variable in `about.md` can be called in the `base.njk` template to use in the `<title>` tag.
+
 ### Extending templates
 
 You can extend parent templates in child template files using the following syntax at the top of the file:
@@ -110,10 +112,50 @@ You can extend parent templates in child template files using the following synt
 {% extends "base.njk" %}
 ```
 
-Alternatively you can declare a **named block** in your `base.njk` file, give it some default content and have the ability to override that content in your individual child templates:
+### Creating blocks
+
+You can also declare a **named block** in your parent template, give it some default content and have the ability to override that content in your individual child templates:
+
+eg. in `base.njk`:
 
 ```js
 {% block content %}
-    {{ content | safe }}
+    <p>Some default content</p>
 {% endblock content %}
 ```
+
+Blocks can also be declared without content:
+
+```js
+{% block content %}{% endblock content %}
+```
+
+In a child template (eg. `simple.njk`), you can then override the content in this block:
+
+```js
+// first extend the parent template
+
+{% extends "base.njk" %}
+
+// we want the content in the base.njk file to be overridden by the html in this file. So to do that we redeclare the content block and add some new content inside it
+{% block content %}
+<div class="container sp">
+   <div class="row justify-content-md-center">
+       <div class="col-10">
+           {{ content | safe }}
+       </div>
+   </div>
+</div>
+{% endblock content %}
+```
+
+Your markdown content file should then declare this child template as it's layout. It will inherit the extended `base.njk` template too.
+
+```md
+---
+layout: "_layouts/simple.njk"
+title: "Some content"
+description: "This is a page."
+---
+```
+
