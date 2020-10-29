@@ -149,7 +149,7 @@ In a child template (eg. `simple.njk`), you can then override the content in thi
 {% endblock content %}
 ```
 
-Your markdown content file should then declare this child template as it's layout. It will inherit the extended `base.njk` template too.
+Your markdown file should then declare this child template as its layout. It will inherit the extended `base.njk` template too.
 
 ```md
 ---
@@ -186,3 +186,202 @@ Include the partial with the following syntax wherever you want to inject it:
 **Important note:** you can only use `include` inside `.njk` files.<br>
 **Another important note:** any front matter in the included file will not be included using this approach, so you want your partials to use global (or directory level?) data files.
 
+## Collections
+
+You can create collections for things like posts, testimonials etc. - basically anything where you might want an archive or multiple instances of the same type of content.
+
+Inside your `/src` folder create a new directory called eg. `/services`. This is where all the files for your different services will live.
+
+Eleventy uses the concept of `tags` to create collections. Each individual service item has a `tags` property in its front matter to show it is part of a collection called `services`:
+
+```
+---
+layout: "_layouts/simple.njk"
+title: "Video Making"
+description: "Lorem ipsum dolor amet sum"
+tags: "services"
+---
+```
+
+In your `/services` directory, you are likely to have lots of markdown files that share the same `layout` and `tags` variable in their front matter. This data can therefore be moved out into a directory level data file (either `json` or `js`) that serves all of the files in that folder. The data file must have the same name as the folder it lives in eg. `services.json`
+
+```json
+{
+   "layout": "_layouts/simple.njk",
+   "tags": "services"
+}
+```
+
+### Outputting items in a collection
+
+I want to create a **Services** page that outputs my services in a list. It will use the base template too. So, starting in the `base.njk` file, create a new empty block:
+
+```js
+{% block services %}{% endblock services %}
+```
+
+Create a new template for your services list, eg. `services.njk` and extend the base template.
+
+Add in the new content for the block. Use a `for` loop as shown below to output your collection.
+
+```js
+{% extends "_layouts/base.njk" %}
+
+{% block services %}
+   <div class="service-area sp">
+       <div class="container">
+           <div class="row">
+
+           {% for service in collections.services %}
+               <div class="col-lg-4 col-md-6 single-service-2">
+                   <div class="inner">
+                       <div class="title">
+                           <div class="icon">
+                               <i class="fa fa-{{ service.data.faIcon }}"></i>
+                           </div>
+                           <h4>{{ service.data.title }}</h4>
+                       </div>
+                       <div class="content">
+                           <p>{{ service.data.description }}</p>
+                           <a href="{{ service.url }}">Read More</a>
+                       </div>
+                   </div>
+               </div>
+           {% endfor %}
+
+           </div>
+       </div>
+   </div>
+{% endblock services %}
+```
+
+Make sure that your `services.md` file uses this layout. You can put the `services.md` file into your services folder to keep things together, but you want to stop it from being read as part of the collection using the `eleventyExcludeFromCollections` property in the front matter and setting to `true`:
+
+```js
+---
+layout: _layouts/services.njk
+title: "Our Services"
+description: "Find out more about what we can offer."
+eleventyExcludeFromCollections: true
+---
+
+## Look at all the services we offer
+
+```
+
+## Handling Data
+
+### Front matter
+
+Data can be stored in a number of different ways. 
+
+The simplest is in the front matter of each individual template (as below). This data can be written as `yaml`, `json` or `js`.
+
+The variables you declare in the front matter can be used anywhere in the template. They can also be used in wrapper templates (as demo-ed [here](#creating-templates-and-linking-to-content))
+
+```
+---
+layout: "_layouts/simple.njk"
+title: "About Us"
+description: "This is our about page."
+bannerBackgroundImage: "/assets/img/jelly.jpg"
+---
+```
+
+### Directory leve data files
+
+You can also store data inside certain directories. Let's say you have a folder that contains testimonials. Each testimonial shares certain data (as well as having it's own specific data). 
+
+That shared data can be pulled out of the front matter and into a `json` or `js` file that sits alongside all testimonial files in the directory.
+
+eg. `testimonials.json`
+
+```json
+{
+   "layout": "_layouts/testimonials.njk",
+   "tags": "testimonials"
+}
+```
+
+### Global data
+
+Global data can be stored in a `_data` folder. In here you can create `json` or `js` files that all templates can access.
+
+The below file is a `settings.json` file inside `/_data`:
+
+```json
+{
+   "siteName": "My site",
+   "email": "info@my.site",
+   "phone": "07768574657",
+   "socials": [
+       {
+           "socialName": "facebook",
+           "socialUrl": "https://myfacebookprofile.com"
+       },
+       {
+           "socialName": "twitter",
+           "socialUrl": "https://mytwitterprofile.com"
+       }
+   ]
+}
+```
+
+You can access this data from any template using the following syntax:
+
+```js
+{% for social in settings.socials %}
+    <a href="{{ social.socialUrl }}" class="fa fa-{{ social.socialName }}"></a>
+{% endfor %}
+```
+
+For more on this see the [docs](https://www.11ty.dev/docs/data/).
+
+
+## API Requests
+
+You can make remote API requests in your data files using eg. **axios**. The following code returns a random image url from [this dog API](https://dog.ceo/dog-api/). It's in a directory level `.js` data file.
+
+You'll obviously need to install **axios** (`npm install axios`) for this to work.
+
+```js
+const axios = require("axios");
+
+module.exports = async () => {
+   const result = await axios.get("https://dog.ceo/api/breed/retriever/golden/images/random");
+
+   const dog = result.data.message;
+
+   return {
+       dogImage: dog
+   };
+}
+```
+
+Add the variable to your desired template, in this case I've added it to `simple.njk`:
+
+```js
+{% block content %}
+<div class="container sp">
+   <div class="row justify-content-md-center">
+       <div class="col-10">
+           {{ content | safe }}
+       </div>
+
+       {% if dogImage %}
+       <div class="col-10">
+           <h3>Look at this good boi</h3>
+           <img src="{{ dogImage }}" alt="What a good boy"/>
+       </div>
+   {% endif %}
+   </div>
+</div>
+
+{% endblock content %}
+```
+
+Any markdown file within this directory that extends `simple.njk` will output the random dog image.
+
+If I didn't want the dog image to appear with the content in a specific `.md` file then just override the `dogImage` variable in the front matter for that file: `dogImage: false`.
+
+It only fetches the API data at build time. Putting the above API request in a global data file would mean that you only get ONE random image back (rather than one per page) because you only make one API request. At directory level, you make one request per page in that directory.
